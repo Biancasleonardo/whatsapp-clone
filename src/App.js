@@ -6,10 +6,18 @@ import ChatIcon from '@material-ui/icons/Chat';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SearchIcon from '@material-ui/icons/Search';
 import ChatListItem from './components/ChatListItem'
+import ChatIntro from './components/ChatIntro';
+import ChatWindow from './components/ChatWindow'
 
 export default () => {
 
-  const [chatlist, setChatList] = useState([{},{},{},{},{},{},{},{},{},{},{},{}]);
+  const [chatlist, setChatList] = useState([
+    {chatId: 1, title: 'Fulano de Tal', image: 'https://www.w3schools.com/howto/img_avatar2.png'},
+    {chatId: 2, title: 'Outro Fulano de Tal', image: 'https://www.w3schools.com/howto/img_avatar2.png'},
+    {chatId: 3, title: 'aquela pessoa', image: 'https://www.w3schools.com/howto/img_avatar2.png'},
+    {chatId: 4, title: 'outra pessoa', image: 'https://www.w3schools.com/howto/img_avatar2.png'},
+  ])
+  const [activeChat, setActiveChat] = useState({})
 
   return (
     <div className='app-window'>
@@ -41,13 +49,27 @@ export default () => {
           {chatlist.map((item, key) => (
             <ChatListItem 
               key={key}
+              // atualiza o activeChat com a key do ChatList selecionado
+              onClick={() => setActiveChat(chatlist[key])}
+              // se o chat ativo for igual ao clicado, o chat fica com um tom mais escuro
+              active={activeChat.chatId === chatlist[key].chatId}
+              // passa as informações do chatlist
+              data={item}
             />
           ))}
         </div>
 
       </div>
       <div className='content-area'>
-        content-area
+        {/* Se o id do activeChat for diferente de undefined, exibe ChatWindow */}
+        {activeChat.chatId !== undefined &&
+          <ChatWindow />
+        }
+        {/* Se o id do chat dor igual a undefined, exibe o chatIntro */}
+        {activeChat.chatId === undefined &&
+          <ChatIntro />
+        }
+
       </div>
     </div>
   )
